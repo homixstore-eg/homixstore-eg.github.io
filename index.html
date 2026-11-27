@@ -89,7 +89,7 @@ if(!ok)return;
 if(document.getElementById('w').value)return;
 var b=document.getElementById('sb');b.disabled=true;b.textContent='جاري الإرسال...';
 var d=new URLSearchParams({name:n,phone:p.slice(0,4)+' '+p.slice(4,7)+' '+p.slice(7),gov:g,address:a,qty:q,ship:ship(),notes:document.getElementById('m').value.trim()});
-fetch('https://script.google.com/macros/s/AKfycbxcTPBviiErJ2vQ15JuudrFu0E9ThnV-wE7hSdwPzlph3N--9eWOCwiMffwMZkaRNjz/exec',{method:'POST',mode:'no-cors',body:d}).then(function(){f.reset();b.style.display='none';document.getElementById('ko').style.display='none';document.getElementById('ok').style.display='block';calc()}).catch(function(){b.disabled=false;b.textContent='ابعت الطلب';document.getElementById('ko').style.display='block'});
+var ac=window.AbortController?new AbortController():null;var tm=setTimeout(function(){if(ac)ac.abort()},25000);fetch('https://script.google.com/macros/s/AKfycbxcTPBviiErJ2vQ15JuudrFu0E9ThnV-wE7hSdwPzlph3N--9eWOCwiMffwMZkaRNjz/exec',{method:'POST',body:d,signal:ac?ac.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw 0;return r.text()}).then(function(t){if(t.trim()!=='ok')throw 0;f.reset();b.style.display='none';document.getElementById('ko').style.display='none';document.getElementById('ok').style.display='block';calc()}).catch(function(){b.disabled=false;b.textContent='ابعت الطلب';document.getElementById('ko').style.display='block'});
 });
 })();
 </script>
